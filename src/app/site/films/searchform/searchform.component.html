@@ -1,0 +1,41 @@
+<div class="container mt-4">
+    <form (ngSubmit)="startSearch()" [formGroup]="searchForm" class="p-4 bg-gray-100 rounded shadow">
+        <div class="flex items-center space-x-4">
+            <div class="flex-1">
+                <label for="filmTitle" class="block text-sm font-medium text-gray-700">Enter the movie title</label>
+                <input formControlName="title" id="filmTitle" type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Movie title">
+                <div *ngIf="title.invalid && (title.dirty || title.touched)" class="text-red-600 text-sm mt-1">
+                    <div *ngIf="title.errors?.['required']">Title is required.</div>
+                    <div *ngIf="title.errors?.['maxlength']">Title cannot be more than 30 characters.</div>
+                    <div *ngIf="title.errors?.['pattern']">Title contains invalid characters.</div>
+                </div>
+            </div>
+            <div class="flex-1">
+                <label for="filmYear" class="block text-sm font-medium text-gray-700">Choose the year</label>
+                <input formControlName="year" id="filmYear" type="number" min="1900" max="2024" step="1" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <div *ngIf="year.invalid && (year.dirty || year.touched)" class="text-red-600 text-sm mt-1">
+                    <div *ngIf="year.errors?.['pattern']">Year must be a 4-digit number.</div>
+                    <div *ngIf="year.errors?.['min']">Year cannot be less than 1900.</div>
+                    <div *ngIf="year.errors?.['max']">Year cannot be more than 2024.</div>
+                    <div *ngIf="year.errors?.['integerBetween']">Year must be between 1900 and 2024.</div>
+                </div>
+            </div>
+            <div class="flex-none">
+                <button type="submit" class="mt-5 px-4 py-2 bg-indigo-600 text-white font-medium rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    Search
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+<div *ngIf="errors" class="mt-4 text-red-600">
+    {{ errors }}
+</div>
+<div *ngIf="results" class="mt-4">
+    <h2 class="text-lg font-medium text-gray-700">Search Results:</h2>
+    <ul class="list-disc pl-5">
+        <li *ngFor="let key of results | keyvalue">
+            <strong>{{ key.key }}:</strong> {{ key.value }}
+        </li>
+    </ul>
+</div>
